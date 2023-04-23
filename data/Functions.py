@@ -29,7 +29,8 @@ def data_cleaning(dataset):
     # columns = ['is_esc', 'is_adjustable_steering', 'is_tpms', 'is_parking_sensors', 'is_parking_camera','is_front_fog_lights','is_rear_window_wiper','is_rear_window_washer','is_rear_window_defogger','is_brake_assist','is_power_door_locks','is_central_locking','is_power_steering','is_driver_seat_height_adjustable','is_day_night_rear_view_mirror','is_ecw','is_speed_alert']
     # for col in columns:
     #     dataset[col] = dataset[col].map({'Yes': 1, 'No': 0})
-
+    dataset.drop(columns = {'max_torque','max_power'}, inplace=True)
+    
     return dataset
 
 def data_processing(dataset):
@@ -70,7 +71,7 @@ def data_processing(dataset):
     dataset['model'] = dataset['model'].apply(lambda x: re.search(pattern, x).group())
 
     #Drop columns
-    dataset = dataset.drop(columns = {'max_torque','max_power','fuel_type','rear_brakes_type','transmission_type','segment','steering_type','engine_type'})
+    dataset = dataset.drop(columns = {'fuel_type','rear_brakes_type','transmission_type','segment','steering_type','engine_type'})
 
     dataset['area_cluster'] = dataset['area_cluster'].astype(int)
     dataset['model'] = dataset['model'].astype(int)
