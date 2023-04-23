@@ -35,51 +35,51 @@ def data_cleaning(dataset):
 
 def data_processing(dataset):
 
-    data_cleaning(dataset)
+    dataset2 = data_cleaning(dataset)
 
     #Fuel Type
-    fuel_type_dummies = pd.get_dummies(dataset['fuel_type'], prefix='fuel_type')
-    dataset = pd.concat([dataset, fuel_type_dummies], axis=1)
+    fuel_type_dummies = pd.get_dummies(dataset2['fuel_type'], prefix='fuel_type')
+    dataset2 = pd.concat([dataset2, fuel_type_dummies], axis=1)
 
 
     #Rear Brakes
-    rear_brakes_dummies = pd.get_dummies(dataset['rear_brakes_type'], prefix='rear_brakes')
-    dataset = pd.concat([dataset, rear_brakes_dummies], axis=1)
+    rear_brakes_dummies = pd.get_dummies(dataset2['rear_brakes_type'], prefix='rear_brakes')
+    dataset2 = pd.concat([dataset2, rear_brakes_dummies], axis=1)
 
 
     #Transmission Type
-    transmission_type_dummies = pd.get_dummies(dataset['transmission_type'], prefix='transmission_type')
-    dataset = pd.concat([dataset, transmission_type_dummies], axis=1)
+    transmission_type_dummies = pd.get_dummies(dataset2['transmission_type'], prefix='transmission_type')
+    dataset2 = pd.concat([dataset2, transmission_type_dummies], axis=1)
 
     #Segment
-    segment_dummies = pd.get_dummies(dataset['segment'], prefix='segment')
-    dataset = pd.concat([dataset, segment_dummies], axis=1)
+    segment_dummies = pd.get_dummies(dataset2['segment'], prefix='segment')
+    dataset2 = pd.concat([dataset2, segment_dummies], axis=1)
 
     # steering_type
-    steering_type_dummies = pd.get_dummies(dataset['steering_type'], prefix='steering_type')
-    dataset = pd.concat([dataset, steering_type_dummies], axis=1)
+    steering_type_dummies = pd.get_dummies(dataset2['steering_type'], prefix='steering_type')
+    dataset2 = pd.concat([dataset2, steering_type_dummies], axis=1)
 
     # engine_type
-    engine_type_dummies = pd.get_dummies(dataset['engine_type'], prefix='engine_type')
-    dataset = pd.concat([dataset, engine_type_dummies], axis=1)
+    engine_type_dummies = pd.get_dummies(dataset2['engine_type'], prefix='engine_type')
+    dataset2 = pd.concat([dataset2, engine_type_dummies], axis=1)
 
     # Define regular expression pattern to match only digits
     pattern = r'\d+'
 
     # Apply regular expression to 'cluster' column and save as new column
-    dataset['area_cluster'] = dataset['area_cluster'].apply(lambda x: re.search(pattern, x).group())
-    dataset['model'] = dataset['model'].apply(lambda x: re.search(pattern, x).group())
+    dataset2['area_cluster'] = dataset2['area_cluster'].apply(lambda x: re.search(pattern, x).group())
+    dataset2['model'] = dataset2['model'].apply(lambda x: re.search(pattern, x).group())
 
     #Drop columns
-    dataset = dataset.drop(columns = {'fuel_type','rear_brakes_type','transmission_type','segment','steering_type','engine_type'})
+    dataset2 = dataset2.drop(columns = {'max_torque','max_power','fuel_type','rear_brakes_type','transmission_type','segment','steering_type','engine_type'})
 
-    dataset['area_cluster'] = dataset['area_cluster'].astype(int)
-    dataset['model'] = dataset['model'].astype(int)
+    dataset2['area_cluster'] = dataset2['area_cluster'].astype(int)
+    dataset2['model'] = dataset2['model'].astype(int)
 
-    dataset = dataset.dropna()
-    #Return dataset
+    dataset2 = dataset2.dropna()
+    #Return dataset2
 
-    return dataset
+    return dataset2
 
 
 
