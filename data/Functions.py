@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import re
 
-def data_processing(dataset):
+def data_cleaning(dataset):
 
     #Transforming Yes and No values into Booleans
     dataset = dataset.replace({ "No" : 0 , "Yes" : 1 })
@@ -29,6 +29,12 @@ def data_processing(dataset):
     # columns = ['is_esc', 'is_adjustable_steering', 'is_tpms', 'is_parking_sensors', 'is_parking_camera','is_front_fog_lights','is_rear_window_wiper','is_rear_window_washer','is_rear_window_defogger','is_brake_assist','is_power_door_locks','is_central_locking','is_power_steering','is_driver_seat_height_adjustable','is_day_night_rear_view_mirror','is_ecw','is_speed_alert']
     # for col in columns:
     #     dataset[col] = dataset[col].map({'Yes': 1, 'No': 0})
+
+    return dataset
+
+def data_processing(dataset):
+
+    data_cleaning(dataset)
 
     #Fuel Type
     fuel_type_dummies = pd.get_dummies(dataset['fuel_type'], prefix='fuel_type')
