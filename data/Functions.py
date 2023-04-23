@@ -18,13 +18,13 @@ def data_processing(dataset):
     dataset['power_bhp'] = dataset['max_power'].str.extract('(\d+.\d+)').astype(float)
     dataset['power_rpm'] = dataset['max_power'].str.extract('@(\d+)').astype(float)
 
-    #Max Torque Dummies
-    torque_dummies = pd.get_dummies(dataset['max_torque'], prefix='torque')
-    dataset = pd.concat([dataset, torque_dummies], axis=1)
+    # #Max Torque Dummies
+    # torque_dummies = pd.get_dummies(dataset['max_torque'], prefix='torque')
+    # dataset = pd.concat([dataset, torque_dummies], axis=1)
 
-    #Max Power Dummies
-    power_dummies = pd.get_dummies(dataset['max_power'], prefix='power')
-    dataset = pd.concat([dataset, power_dummies], axis=1)
+    # #Max Power Dummies
+    # power_dummies = pd.get_dummies(dataset['max_power'], prefix='power')
+    # dataset = pd.concat([dataset, power_dummies], axis=1)
 
     # columns = ['is_esc', 'is_adjustable_steering', 'is_tpms', 'is_parking_sensors', 'is_parking_camera','is_front_fog_lights','is_rear_window_wiper','is_rear_window_washer','is_rear_window_defogger','is_brake_assist','is_power_door_locks','is_central_locking','is_power_steering','is_driver_seat_height_adjustable','is_day_night_rear_view_mirror','is_ecw','is_speed_alert']
     # for col in columns:
@@ -64,7 +64,7 @@ def data_processing(dataset):
     dataset['model'] = dataset['model'].apply(lambda x: re.search(pattern, x).group())
 
     #Drop columns
-    dataset = dataset.drop(columns = {'torque_Nm','torque_rpm','power_bhp','power_rpm','max_torque','max_power','fuel_type','rear_brakes_type','transmission_type','segment','steering_type','engine_type'})
+    dataset = dataset.drop(columns = {'max_torque','max_power','fuel_type','rear_brakes_type','transmission_type','segment','steering_type','engine_type'})
 
     dataset['area_cluster'] = dataset['area_cluster'].astype(int)
     dataset['model'] = dataset['model'].astype(int)
