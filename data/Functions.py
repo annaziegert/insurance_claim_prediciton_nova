@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import re
+from sklearn.preprocessing import PowerTransformer
 
 def data_cleaning(dataset):
 
@@ -71,10 +72,14 @@ def data_processing(dataset):
     dataset2['model'] = dataset2['model'].apply(lambda x: re.search(pattern, x).group())
 
     #Drop columns
-    dataset2 = dataset2.drop(columns = {'max_torque','max_power','fuel_type','rear_brakes_type','transmission_type','segment','steering_type','engine_type'})
+    dataset2 = dataset2.drop(columns = {'fuel_type','rear_brakes_type','transmission_type','segment','steering_type','engine_type'}) # 'max_torque','max_power',
 
     dataset2['area_cluster'] = dataset2['area_cluster'].astype(int)
     dataset2['model'] = dataset2['model'].astype(int)
+
+    # Powertransform relevant columns
+    pt = PowerTransformer(method='yeo-johnson')
+    dataset2.loc[:,['age_of_car','age_of_policyholder']] = pt.fit_transform(pd.DataFrame(dataset2.loc[:,['age_of_car','age_of_policyholder']]))
 
     dataset2 = dataset2.dropna()
     #Return dataset2
