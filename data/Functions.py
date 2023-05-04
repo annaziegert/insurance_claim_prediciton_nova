@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import re
-from sklearn.preprocessing import PowerTransformer
+from sklearn.preprocessing import LabelEncoder, StandardScaler, PowerTransformer
 
 def data_cleaning(dataset):
 
@@ -86,6 +86,36 @@ def data_processing(dataset):
 
     return dataset2
 
+
+def lorenzo_preprocessor(dataset):
+
+    # Load the dataset
+    df = data_cleaning(dataset)
+
+    # Get the object columns except for policy_id
+    object_cols = [col for col in df.columns if df[col].dtype == 'object']
+
+    # Perform label encoding on object columns
+    for col in object_cols:
+        le = LabelEncoder()
+        df[col] = le.fit_transform(df[col].astype(str))
+
+    # Apply StandardScaler to numerical columns
+    numerical_cols = [col for col in df.columns if df[col].dtype != 'object'  and col != 'is_claim']
+    scaler = StandardScaler()
+    df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
+
+    # Drop rows with nan values and policy_id
+    df.dropna(inplace=True)
+
+    # Adapt two columns
+    pt=PowerTransformer(method='yeo-johnson')
+    df.loc[:,['age_of_car','age_of_policyholder']] = pt.fit_transform(pd.DataFrame(df.loc[:,['age_of_car','age_of_policyholder']]))
+
+    # Reset index
+    df = df.reset_index(drop=True)
+
+    return df
 
 
 
